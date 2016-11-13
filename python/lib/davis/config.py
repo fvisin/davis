@@ -37,7 +37,10 @@ __C.PATH.DATA_DIR       = osp.abspath(osp.join(__C.PATH.ROOT_DIR, 'data/DAVIS'))
 __C.PATH.RESULTS_DIR  = osp.abspath(osp.join(__C.PATH.DATA_DIR,  'Results'))
 
 # Resulting segmentation mask folder
-__C.PATH.SEGMENTATION_DIR  = osp.abspath(osp.join(__C.PATH.RESULTS_DIR,  'Segmentations', __C.RESOLUTION))
+#__C.PATH.SEGMENTATION_DIR  = osp.abspath(osp.join(__C.PATH.RESULTS_DIR,  'Segmentations', __C.RESOLUTION))
+__C.PATH.SEGMENTATION_DIR  = osp.abspath(osp.join(__C.PATH.RESULTS_DIR,
+                                                  'Samples',
+                                                  'davis1.FV2_new/'))
 
 # Evaluation Folder"
 __C.PATH.EVAL_DIR     = osp.abspath(osp.join(__C.PATH.RESULTS_DIR,  'Evaluation', __C.RESOLUTION))
@@ -63,10 +66,9 @@ assert __C.EVAL_SET == 'paper' or __C.EVAL_SET == 'all'
 __C.FILES.DB_BENCHMARK          = osp.abspath(
 		osp.join(__C.PATH.RESULTS_DIR,"Evaluation/db_benchmark.yml"))
 
-__C.N_JOBS = 32
+__C.N_JOBS = 4
 
 # append path for cpp libraries
 def _set_path_to_cpp_libs():
 	sys.path.append(osp.abspath(
 		osp.join(cfg.PATH.ROOT_DIR,'build/release')))
-

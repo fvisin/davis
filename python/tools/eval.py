@@ -54,9 +54,12 @@ if __name__ == '__main__':
 	args       = parse_args()
 	args.input = osp.abspath(args.input)
 
-	db_eval_dict = db_eval(osp.basename(args.input),
-			os.listdir(args.input),osp.dirname(args.input),args.metrics)
+	db_eval_dict = db_eval(
+            osp.basename(args.input),
+            os.listdir(args.input),
+            osp.dirname(args.input),args.metrics)
 
+        import ipdb; ipdb.set_trace()
 	log.info("Saving results in: %s"%osp.join(
 			args.output,osp.basename(args.input))+".h5")
 

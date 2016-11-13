@@ -75,7 +75,7 @@ def db_eval_sequence(technique,sequence,inputdir,metrics=None):
 
 	db_sequence     = DAVISAnnotationLoader(cfg,sequence)
 	db_segmentation = DAVISSegmentationLoader(cfg,sequence,
-			osp.join(inputdir,technique))
+			osp.join(inputdir,technique), ext_an='jpg')
 
 	if metrics is None or 'J' in metrics:
 		J,j_M,j_O,j_D = db_sequence.eval(db_segmentation,'J')
@@ -124,6 +124,7 @@ def db_eval(techniques,sequences,inputdir=cfg.PATH.SEGMENTATION_DIR,metrics=None
 	for technique in techniques:
 		log.info('Evaluating technique: "%s"'%technique)
 		timer.tic()
+
 
 		J,j_M,j_O,j_D,F,f_M,f_O,f_D,T,t_M = \
 				 zip(*Parallel(n_jobs=cfg.N_JOBS)(delayed(db_eval_sequence)(
@@ -211,8 +212,16 @@ def db_read_eval(technique=None,measure=None,
 
 		for m in measures:
 			db[t][m] = OrderedDict()
+
+			sequences = db_h5[m].keys()
 			for s in sequences:
+                            try:
 				db[t][m][s] = eval_func(db_h5[m][s][...])
+				print(s)
+                            except:
+                                #db[t][m][s] = (0., 0., 0.)
+                                pass
+
 
 	return db
 
@@ -284,8 +293,8 @@ def db_eval_view(db_eval_dict,technique,summary=False):
 
 	X = np.hstack(X)[:,:7]
 	if not summary:
-		for s,row in zip(db_sequences,X):
-			table.add_row([s.name]+ ["{: .3f}".format(n) for n in row])
+		for s,row in zip(db_eval_dict[technique]['J'].keys(),X):
+			table.add_row([s]+ ["{: .3f}".format(n) for n in row])
 
 	table.add_row(['Average'] +
 			["{: .3f}".format(n) for n in np.nanmean(X,axis=0)])

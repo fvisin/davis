@@ -210,6 +210,7 @@ class DAVISAnnotationLoader(DAVISSegmentationLoader):
 				1-db_segmentation._frames[0]:len(annotations)+1-db_segmentation._frames[0]]
 
 		assert len(annotations) == len(segmentation)
+                assert annotations.files[0].split('/')[-2] == segmentation.files[0].split('/')[-2]
 
 		if measure == 'T':
 			magic_number = 5.0
